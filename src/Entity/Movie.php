@@ -5,6 +5,7 @@ namespace Entity;
 
 class Movie
 {
+    private int $movieId;
     private int $posterId;
     private string $originalLanguage;
     private string $originalTitle;
@@ -14,6 +15,15 @@ class Movie
     private int $runtime;
     private string $tagline;
     private string $title;
+
+    /**
+     * Accesseur de l'id du l'instance de Movie.
+     * @return int
+     */
+    public function getMovieId(): int
+    {
+        return $this->movieId;
+    }
 
     /**
      * Accesseur de l'attribut posterId de l'entité.
