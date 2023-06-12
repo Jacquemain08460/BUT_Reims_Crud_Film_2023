@@ -14,5 +14,15 @@
             "email": "damien.fay@etudiant.univ-reims.fr"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-pdo": "*"
+    },
+    "scripts": {
+        "start:linux": "bin/run-server.sh",
+        "start:windows": "bin/run-server.bat",
+        "fix:cs": "php vendor/bin/php-cs-fixer fix"
+    },
+    "config": {
+        "process-timeout": 0
+    }
 }
