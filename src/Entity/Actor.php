@@ -18,7 +18,7 @@ class Actor
     private int $actorid;
     private string $name;
     private string $birthday;
-    private string $deathday;
+    private string|null $deathday;
     private string $birthplace;
     private string $biography;
 
@@ -81,18 +81,18 @@ class Actor
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDeathday(): string
+    public function getDeathday(): ?string
     {
         return $this->deathday;
     }
 
     /**
-     * @param string $deathday
+     * @param string|null $deathday
      * @return Actor
      */
-    public function setDeathday(string $deathday): Actor
+    public function setDeathday(?string $deathday): Actor
     {
         $this->deathday = $deathday;
         return $this;
@@ -200,7 +200,7 @@ class Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                SELECT *
+                SELECT id, name
                 FROM people
                 ORDER BY name
             SQL
@@ -214,9 +214,9 @@ class Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                SELECT *
-                FROM people
-                WHERE id = :Id
+                SELECT  *
+                FROM    people
+                WHERE   id = :Id
             SQL
         );
         $stmt->execute([":Id" => $actorId]);

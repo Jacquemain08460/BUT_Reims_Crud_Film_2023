@@ -20,7 +20,7 @@ class AllActors
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                SELECT *
+                SELECT id, name
                 FROM people
                 ORDER BY name
             SQL
