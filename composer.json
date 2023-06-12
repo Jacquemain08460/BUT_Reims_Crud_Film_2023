@@ -1,0 +1,18 @@
+{
+    "name": "fayda/sae_music",
+    "description": "Developpement d'un site web de consultation et modification de films et d'acteurs",
+    "type": "project",
+    "license": "Copyleft",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "FAY Damien",
+            "email": "damien.fay@etudiant.univ-reims.fr"
+        }
+    ],
+    "require": {}
+}
