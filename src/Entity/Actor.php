@@ -15,16 +15,37 @@ use PDO;
 
 class Actor
 {
-    private int $actorid;
+    private int|null $actorid;
     private string $name;
     private string $birthday;
     private string|null $deathday;
     private string $birthplace;
     private string $biography;
+    private string $avatarid;
+    private string $id;
 
     private function __construct()
     {
     }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return Actor
+     */
+    public function setId(string $id): Actor
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 
     /**
      * @return string
@@ -45,18 +66,18 @@ class Actor
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getActorId(): int
+    public function getActorId(): ?int
     {
         return $this->actorid;
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      * @return Artist
      */
-    private function setActorId(int $id): Artist
+    private function setActorId(?int $id): Artist
     {
         $this->actorid = $id;
         return $this;
@@ -131,6 +152,24 @@ class Actor
     public function setBiography(string $biography): Actor
     {
         $this->biography = $biography;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatarid(): string
+    {
+        return $this->avatarid;
+    }
+
+    /**
+     * @param string $avatarid
+     * @return Actor
+     */
+    public function setAvatarid(string $avatarid): Actor
+    {
+        $this->avatarid = $avatarid;
         return $this;
     }
 
@@ -210,7 +249,7 @@ class Actor
         return $stmt->fetchAll();
     }
 
-    public static function findById(int $actorId): Actor
+    public static function findById(int $Id): Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -219,7 +258,7 @@ class Actor
                 WHERE   id = :Id
             SQL
         );
-        $stmt->execute([":Id" => $actorId]);
+        $stmt->execute([":Id" => $id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
         $res = $stmt->fetchAll();
         if (count($res) == 0) {
