@@ -5,18 +5,22 @@ declare(strict_types=1);
 require_once '../vendor/autoload.php';
 
 use Database\MyPdo;
-use Entity\Actor;
 use Html\AppWebPage;
+use Entity\Actor;
 
-if (!isset($_GET["artistId"]) || !ctype_digit($_GET["artistId"])) {
-    header("Location: index.php");
-    exit(404);
+#MyPDO::setConfiguration('mysql:host=mysql;dbname=cutron01_music;charset=utf8', 'web', 'web');
+
+#$All = new \Entity\All\AllActors();
+
+$All = Actor::getAll();
+
+$WebPage = new AppWebPage('Artistes');
+
+#$Actors = $All -> getAll();
+
+foreach ($All as $Actor) {
+    echo($Actor->getActorId());
+    #$WebPage->appendContent("<a href='actor.php?actorId={$Actor->getActorId()}&artistName={$Actor->getName()}'>{$WebPage -> escapeString($Actor -> getname())}</a><hr>");
 }
 
-try {
-    $artist = Artist::findById((int)$_GET['artistId']);
-} catch (\Entity\Exception\EntityNotFoundException) {
-    header("Location: index.php");
-    http_response_code(404);
-    exit(404);
-}
+echo $WebPage->toHTML();
