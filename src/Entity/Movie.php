@@ -300,4 +300,28 @@ class Movie
         return $res[0];
     }
 
+
+    public function findActorByMovieId():array
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+        SELECT *
+        FROM people 
+
+        WHERE people.id in (SELECT peopleId
+                            FROM cast
+                            WHERE movieId = :ID)
+                  = :ID
+        SQL);
+        $stmt->execute([":ID" => $this->getId()]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
+        $res = $stmt->fetchAll();
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res;
+
+    }
+
+
 }
