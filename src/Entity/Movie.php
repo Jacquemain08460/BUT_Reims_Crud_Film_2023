@@ -311,7 +311,7 @@ class Movie
             <<<'SQL'
                 SELECT  *
                 FROM    movie
-                WHERE   movieId = :ID
+                WHERE   id = :ID
             SQL
         );
         $stmt->execute([":ID" => $Id]);
