@@ -265,6 +265,3 @@ class Actor
         return $res[0];
     }
 }
-
-
-#posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title, movieId
