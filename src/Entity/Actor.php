@@ -9,6 +9,7 @@ use Entity\All\AllActors;
 
 #use Entity\Exception;
 
+use Entity\Exception\EntityNotFoundException;
 use PDO;
 
 #use function PHPUnit\Framework\throwException;
@@ -57,9 +58,9 @@ class Actor
 
     /**
      * @param string $name
-     * @return Artist
+     * @return Actor
      */
-    public function setName(string $name): Artist
+    public function setName(string $name): Actor
     {
         $this->name = $name;
         return $this;
@@ -75,9 +76,9 @@ class Actor
 
     /**
      * @param int|null $id
-     * @return Artist
+     * @return Actor
      */
-    private function setActorId(?int $id): Artist
+    private function setActorId(?int $id): Actor
     {
         $this->actorid = $id;
         return $this;
@@ -182,7 +183,7 @@ class Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                DELETE FROM ARTIST
+                DELETE FROM ACTOR
                 WHERE ID = :ID
     SQL
         );
@@ -195,7 +196,7 @@ class Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                UPDATE  ARTIST
+                UPDATE  ACTOR
                 SET     name = :NAME
                 WHERE   ID = :ID
     SQL
@@ -208,7 +209,7 @@ class Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                INSERT  INTO ARTIST (name)
+                INSERT  INTO ACTOR (name)
                 VALUES  (:NAME)
     SQL
         );
@@ -227,12 +228,12 @@ class Actor
         return $this;
     }
 
-    public static function create($name, $id = null)
+    public static function create($name, $id = null):Actor
     {
-        $artiste = new Artist();
-        $artiste->setName($name);
-        $artiste->setId($id);
-        return $artiste;
+        $actor = new Actor();
+        $actor->setName($name);
+        $actor->setId($id);
+        return $actor;
     }
 
     public static function getAll(): array
@@ -249,7 +250,7 @@ class Actor
         return $stmt->fetchAll();
     }
 
-    public static function findById(int $Id): Actor
+    public static function findById(int $id): Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
