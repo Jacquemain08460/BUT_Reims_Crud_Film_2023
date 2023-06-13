@@ -17,17 +17,17 @@ class Image
     private string $jpeg;
     private int $imageId;
 
-    public function getId():int
+    public function getId(): int
     {
         return $this->imageId;
     }
 
-    public function getJpeg():string
+    public function getJpeg(): string
     {
         return $this->jpeg;
     }
 
-    public static function findById(int $id):Image
+    public static function findById(int $id): Image
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
