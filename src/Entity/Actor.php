@@ -226,7 +226,7 @@ class Actor
         return $this;
     }
 
-    public static function create($name, $id = null):Actor
+    public static function create($name, $id = null): Actor
     {
         $actor = new Actor();
         $actor->setName($name);

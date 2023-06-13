@@ -20,6 +20,7 @@ class Movie
     private string $tagline;
     private string $title;
     private int|null $movieId;
+    private int $id;
 
     /**
      * @param int|null $movieId
@@ -32,27 +33,6 @@ class Movie
     }
 
     /**
-     *
-     */
-    public static function findById(int $id):Movie
-    {
-        $stmt = MyPDO::getInstance()->prepare(
-            <<<'SQL'
-                SELECT  *
-                FROM    movie
-                WHERE   id = :Id
-            SQL
-        );
-        $stmt->execute([":Id" => $id]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
-        $res = $stmt->fetchAll();
-        if (count($res) == 0) {
-            throw new EntityNotFoundException();
-        }
-        return $res[0];
-    }
-
-    /**
      * Accesseur de l'id du l'instance de Movie.
      * @return int|null
      */
@@ -60,7 +40,6 @@ class Movie
     {
         return $this->movieId;
     }
-
 
     /**
      * Accesseur de l'attribut posterId de l'entité.
@@ -74,10 +53,12 @@ class Movie
     /**
      * Modificateur de l'attribut posterId de l'entité.
      * @param int $posterId
+     * @return Movie
      */
-    public function setPosterId(int $posterId): void
+    public function setPosterId(int $posterId): Movie
     {
         $this->posterId = $posterId;
+        return $this;
     }
 
     /**
@@ -92,10 +73,12 @@ class Movie
     /**
      * Modificateur de l'attribut originalLanguage de l'entité.
      * @param string $originalLanguage
+     * @return Movie
      */
-    public function setOriginalLanguage(string $originalLanguage): void
+    public function setOriginalLanguage(string $originalLanguage): Movie
     {
         $this->originalLanguage = $originalLanguage;
+        return $this;
     }
 
     /**
@@ -110,10 +93,12 @@ class Movie
     /**
      * Modificateur de l'attribut originalTitle de l'entité.
      * @param string $originalTitle
+     * @return Movie
      */
-    public function setOriginalTitle(string $originalTitle): void
+    public function setOriginalTitle(string $originalTitle): Movie
     {
         $this->originalTitle = $originalTitle;
+        return $this;
     }
 
     /**
@@ -128,10 +113,12 @@ class Movie
     /**
      * Modificateur de l'attribut overview de l'entité.
      * @param string $overview
+     * @return Movie
      */
-    public function setOverview(string $overview): void
+    public function setOverview(string $overview): Movie
     {
         $this->overview = $overview;
+        return $this;
     }
 
     /**
@@ -146,10 +133,12 @@ class Movie
     /**
      * Modificateur de l'attribut releaseDate de l'entité.
      * @param string $releaseDate
+     * @return Movie
      */
-    public function setReleaseDate(string $releaseDate): void
+    public function setReleaseDate(string $releaseDate): Movie
     {
         $this->releaseDate = $releaseDate;
+        return $this;
     }
 
     /**
@@ -164,10 +153,12 @@ class Movie
     /**
      * Modificateur de l'attribut runtime de l'entité.
      * @param int $runtime
+     * @return Movie
      */
-    public function setRuntime(int $runtime): void
+    public function setRuntime(int $runtime): Movie
     {
         $this->runtime = $runtime;
+        return $this;
     }
 
     /**
@@ -182,10 +173,12 @@ class Movie
     /**
      * Modificateur de l'attribut tagline de l'entité.
      * @param string $tagline
+     * @return Movie
      */
-    public function setTagline(string $tagline): void
+    public function setTagline(string $tagline): Movie
     {
         $this->tagline = $tagline;
+        return $this;
     }
 
     /**
@@ -200,13 +193,23 @@ class Movie
     /**
      * Modificateur de l'attribut title de l'entité.
      * @param string $title
+     * @return Movie
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): Movie
     {
         $this->title = $title;
+        return $this;
     }
 
-    public function delete()
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function delete(): void
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -214,10 +217,10 @@ class Movie
                 WHERE ID = :ID
     SQL
         );
-        $stmt->execute([":ID" => $this->movieId]);
+        $stmt->execute([":ID" => $this->id]);
     }
 
-    public function update()
+    public function update(): Movie
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -230,17 +233,17 @@ class Movie
                         runtime = :RT,
                         tagline = :TG,
                         title = :TT,
-                WHERE   movieId = :ID
+                WHERE   id = :ID
     SQL
         );
         $stmt->execute([":PI" => $this->posterId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID => $this->movieId"]);
+            ":TT" => $this->title, ":ID => $this->id"]);
         return $this;
     }
 
-    public function insert()
+    public function insert(): Movie
     {
         $this->movieId = (int)MyPDO::getInstance()->lastInsertId();
         $stmt = MyPDO::getInstance()->prepare(
@@ -252,11 +255,11 @@ class Movie
         $stmt->execute([":PI" => $this->movieId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID" => $this->movieId]);
+            ":TT" => $this->title, ":ID" => $this->id]);
         return $this;
     }
 
-    public function save()
+    public function save(): Movie
     {
         if ($this->movieId == null) {
             $this->insert();
@@ -275,7 +278,7 @@ class Movie
         int    $runtime,
         string $tagline,
         string $title
-    ) {
+    ): Movie {
         $movie = new Movie();
         $movie->setPosterId($posterId);
         $movie->setOriginalLanguage($originalLanguage);
@@ -294,11 +297,11 @@ class Movie
             <<<'SQL'
                 SELECT *
                 FROM movie
-                ORDER BY movieId
+                ORDER BY id
             SQL
         );
         $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Movie::class);
         return $stmt->fetchAll();
     }
 
@@ -319,5 +322,4 @@ class Movie
         }
         return $res[0];
     }
-
 }
