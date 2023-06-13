@@ -23,12 +23,10 @@ class Movie
 
     /**
      * @param int|null $movieId
-     * @return Movie
      */
-    public function setMovieId(?int $movieId): Movie
+    public function setMovieId(int $movieId): void
     {
         $this->movieId = $movieId;
-        return $this;
     }
 
 
@@ -217,7 +215,6 @@ class Movie
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
             ":TT" => $this->title, ":ID => $this->movieId"]);
-        return $this;
     }
 
     public function insert()
@@ -233,7 +230,6 @@ class Movie
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
             ":TT" => $this->title, ":ID" => $this->movieId]);
-        return $this;
     }
 
     public function save()
@@ -243,7 +239,6 @@ class Movie
         } else {
             $this->update();
         }
-        return $this;
     }
 
     public static function create(
