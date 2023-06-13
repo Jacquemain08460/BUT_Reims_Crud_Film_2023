@@ -11,7 +11,17 @@ class Image
     private string $jpeg;
     private int $imageId;
 
-    public function findByIdPoster(int $idPoster):Image
+    public function getId():int
+    {
+        return $this->imageId;
+    }
+
+    public function getJpeg():string
+    {
+        return $this->jpeg;
+    }
+
+    public static function findById(int $id):Image
     {
         $image = "";
         $sql =
@@ -20,7 +30,7 @@ class Image
             FROM jacq0223.image
             WHERE id = 
             SQL;
-        $sql.= "{$idPoster}\n";
+        $sql.= "{$id}\n";
         $req = MyPDO::getInstance()->prepare($sql);
         $req->setFetchMode(PDO::FETCH_CLASS, Image::class);
         $req->execute();
@@ -28,9 +38,5 @@ class Image
             $image=$ligne;
         }
         return $image;
-
     }
-
-
-
 }
