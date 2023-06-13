@@ -16,7 +16,7 @@ use PDO;
 
 class Actor
 {
-    private int|null $actorid;
+    private int $actorid;
     private string $name;
     private string $birthday;
     private string|null $deathday;
@@ -188,8 +188,6 @@ class Actor
     SQL
         );
         $stmt->execute([":ID" => $this->actorid]);
-        $this->null;
-        return $this;
     }
 
     public function update()
