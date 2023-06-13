@@ -2,28 +2,25 @@
 declare(strict_types=1);
 
 use Database\MyPdo;
+use Entity\Movie;
 use Entity\Image;
 use Html\AppWebPage;
-
-MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 $webPage = new AppWebPage('Movies');
 
 $sql =
     <<<'SQL'
     SELECT *
-    FROM jacq0223.movie
+    FROM   movie
     SQL;
 
 $stmt = MyPdo::getInstance()->prepare($sql);
 
-
 $stmt->execute();
-$html = '';
-while (($ligne = $stmt->fetch()) !== false) {
-    $html.= "<div>";
-    $title= $webPage->escapeString("{$ligne['title']}"."</div>");
-    //echo $html;
+
+$page = new AppWebPage('Movies');
+
+
 
     $movieId = $ligne;
     $image = Image::findById($ligne['posterId']);
