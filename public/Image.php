@@ -1,14 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
+use Entity\Image;
 use Entity\Exception\EntityNotFoundException;
 use Entity\Exception\ParameterException;
 
 try {
-    $id = _GET['posterId'];
-    ///////////////////////
-    // À vous de jouer ! //
-    ///////////////////////
+    $id = $_GET['imageId'];
+    if (!isset($_GET['imageId']) || !ctype_digit($_GET['imageId'])) {
+        throw new ParameterException("The GET parameter 'imageId' is not present or is not compatible");
+    }
+    header('Content-Type: image/jpeg');
+    $Instance = Image::findById((int)$_GET['coverId']);
+    echo $Instance -> getJpeg();
 } catch (ParameterException) {
     http_response_code(400);
 } catch (EntityNotFoundException) {
