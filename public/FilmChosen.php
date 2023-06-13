@@ -9,7 +9,7 @@ use Html\AppWebPage;
 MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 if (!isset($_GET["movieId"]) || !ctype_digit($_GET["movieId"])) {
-    header("Location: Film.php");
+    header("Location: Movie.php");
     exit(404);
 }
 
@@ -29,7 +29,7 @@ $moviePage->setTitle("Films - {$film->getTitle()}");
 $contenu =
     <<<'HTML'
      <div>
-     <img scr="" >
+     
      HTML;
 $contenu .= "<p>{$film->getTitle()}</p>\n";
 $contenu .="<p>{$film->getReleaseDate()}</p>";
