@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once '../../vendor/autoload.php';
 
 use Database\MyPdo;
+use Entity\Collection\MovieCollection;
 use Entity\Exception\EntityNotFoundException;
 use Entity\Exception\ParameterException;
 use Entity\Genre;
@@ -33,7 +34,7 @@ $WebPage = new MovieWebPage('Movies');
 $genres = Genre::getAll();
 
 
-$MOVIES =Movie::getMovies($genreChosen);
+$MOVIES =MovieCollection::getMovies($genreChosen);
 
 
 $WebPage->appendContent("<form name='select' method='POST' action='TrieFilm.php?genreId={$_POST["genreId"]}'>");
