@@ -18,6 +18,7 @@ use Html\MovieWebPage;
 //Trie
 try {
     $genreChosen = $_POST["genreId"];
+    echo "AA".$_POST["genreId"];
     $genreChosen +=0;
 } catch (ParameterException) {
     http_response_code(400);
@@ -44,15 +45,14 @@ foreach($genres as $genre){
                                         <option value={$genre->getId()}>{$genre->getName()}</option>
                                HTML);
 }
-#$WebPage->appendContent( <<<HTML
- #                                       <option value=null>Tous</option>
- #                              HTML);
 $WebPage->appendContent("</select>");
-$WebPage->appendContent("<input type='submit' value='Submit' /></form>");
+$WebPage->appendContent("<input type='submit' value='Submit'></form>");
 
 
 foreach ($MOVIES as $Movie) {
-    $WebPage->appendContent("<a href='DetailsFilm.php?movieId={$Movie->getId()}'><img src='ImageMovie.php?imageId={$Movie->getPosterId()}'>");
+    echo "R".$Movie->getId()."e";
+    $idMovie = $Movie->getId();
+    $WebPage->appendContent("<a href='DetailsFilm.php?movieId={400}'><img src='ImageMovie.php?imageId={$Movie->getPosterId()}'>");
     $WebPage->appendContent("{$WebPage -> escapeString($Movie -> getTitle())}</a><hr>");
 }
 
