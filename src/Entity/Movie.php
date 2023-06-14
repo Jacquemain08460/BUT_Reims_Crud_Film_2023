@@ -255,8 +255,9 @@ class Movie
         echo "Début de Test";
         $stmt->execute([":PI" => $this->posterId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
-            ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID" => $this->id]);
+            ":RD" => $this->releaseDate, ":RT" => $this->runtime,
+            ":TG" => $this->tagline,  ":TT" => $this->title,
+            ":ID" => $this->id]);
         echo "Fin de Test";
         return $this;
     }
@@ -269,7 +270,7 @@ class Movie
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                INSERT  INTO movie (posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title)
+                INSERT  INTO MOVIE (posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title)
                 VALUES  (:PI, :OL, :OT, :OV, :RD, :RT, :TG, :TT);
             SQL
         );
@@ -277,8 +278,8 @@ class Movie
         echo "Quelque chose ne vas pas... pas...";
         $stmt->execute([":PI" => $this->getPosterId(), ":OL" => $this->getOriginalLanguage(),
             ":OT" => $this->getOriginalTitle(), ":OV" => $this->getOverview(),
-            ":RD" => $this->getReleaseDate(), ":TG" => $this->getTagline(),
-            ":TT" => $this->getTitle()]);
+            ":RD" => $this->getReleaseDate(), ":RT" => $this->getRuntime(),
+            ":TG" => $this->getTagline(), ":TT" => $this->getTitle()]);
         echo "Si c'est passé, ce message s'affiche";
         $this->id = (int)MyPDO::getInstance()->lastInsertId();
         return $this;
