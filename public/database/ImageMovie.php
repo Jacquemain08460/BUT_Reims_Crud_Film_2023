@@ -7,7 +7,7 @@ use Entity\Image;
 use Entity\Exception\EntityNotFoundException;
 use Entity\Exception\ParameterException;
 
-MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 
 try {

@@ -10,7 +10,7 @@ use Entity\Movie;
 use Entity\Cast;
 use Html\MovieWebPage;
 
-MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 if (!isset($_GET["movieId"]) || !ctype_digit($_GET["movieId"])) {
     header("Location: DetailsFilm.php");
