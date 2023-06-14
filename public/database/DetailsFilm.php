@@ -10,7 +10,7 @@ use Entity\Movie;
 use Entity\Cast;
 use Html\MovieWebPage;
 
-#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 if (!isset($_GET["movieId"]) || !ctype_digit($_GET["movieId"])) {
     header("Location: DetailsFilm.php");
@@ -29,7 +29,7 @@ $moviePage = new MovieWebPage();
 
 $moviePage->setTitle("Films - {$film->getTitle()}");
 
-$moviePage->appendContent("<img src='Image.php?imageId={$film->getPosterId()}'>");
+$moviePage->appendContent("<img src='ImageMovie.php?imageId={$film->getPosterId()}'>");
 $content =
     <<<'HTML'
      <div>
@@ -52,7 +52,7 @@ foreach($acteurs as $acteur){
     #$acteur = Actor::findById($acteur->getActorId());
     #$content .= "<div>";
     #$contenu .="<a href='actor.php?actorId={$acteur->getActorId()}'>";
-    #$content .="<img src='Image.php?imageId={$acteur->getAvatarId()}'>";
+    #$content .="<img src='ImageMovie.php?imageId={$acteur->getAvatarId()}'>";
     #$contenu .="<p>{Cast::findActorRole($acteur->getActorId())}</p>";
     #$content .="<a href='DetailsActor.php?actorId={$acteur->getId()}'>{$acteur->getname()}</a><hr></div>";
 }
