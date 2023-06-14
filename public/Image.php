@@ -7,7 +7,6 @@ use Entity\Exception\EntityNotFoundException;
 use Entity\Exception\ParameterException;
 
 try {
-    $id = $_GET['imageId'];
     if (!isset($_GET['imageId']) || !ctype_digit($_GET['imageId'])) {
         throw new ParameterException("The GET parameter 'imageId' is not present or is not compatible");
     }

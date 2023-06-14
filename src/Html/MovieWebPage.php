@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Html;
 
-class AppWebPage extends WebPage
+class MovieWebPage extends WebPage
 {
     public function __construct(string $title = '', string $head = '', string $body = '')
     {
@@ -33,7 +33,7 @@ class AppWebPage extends WebPage
                                 </div>
                             </content>
                             <footer class="footer">
-                                {$this->getLastModification()}
+                                Dernière modification : {$this->getLastModification()}
                             </footer>
                         </body>
                     </html>

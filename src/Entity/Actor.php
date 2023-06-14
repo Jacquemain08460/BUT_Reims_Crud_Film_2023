@@ -6,24 +6,22 @@ namespace Entity;
 
 use Database\MyPdo;
 use Entity\All\AllActors;
-
-#use Entity\Exception;
-
 use Entity\Exception\EntityNotFoundException;
 use PDO;
+
+#use Entity\Exception;
 
 #use function PHPUnit\Framework\throwException;
 
 class Actor
 {
-    private int $actorid;
-    private string $name;
+    private int|null $avatarId;
     private string|null $birthday;
     private string|null $deathday;
-    private string|null $birthplace;
+    private string $name;
     private string|null $biography;
-    private int|null $avatarid;
-    private int $id;
+    private string|null $placeOfBirth;
+    private int|null $id;
 
 
     /**
@@ -59,24 +57,6 @@ class Actor
     public function setName(string $name): Actor
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getActorId(): ?int
-    {
-        return $this->actorid;
-    }
-
-    /**
-     * @param int|null $id
-     * @return Actor
-     */
-    private function setActorId(?int $id): Actor
-    {
-        $this->actorid = $id;
         return $this;
     }
 
@@ -117,17 +97,17 @@ class Actor
     /**
      * @return string
      */
-    public function getBirthplace(): string
+    public function getPlaceOfBirth(): string
     {
-        return $this->birthplace;
+        return $this->placeOfBirth;
     }
 
     /**
-     * @param string $birthplace
+     * @param string $placeOfBirth
      */
-    public function setBirthplace(string $birthplace): Actor
+    public function setPlaceOfBirth(string $placeOfBirth): Actor
     {
-        $this->birthplace = $birthplace;
+        $this->placeOfBirth = $placeOfBirth;
         return $this;
     }
 
@@ -143,30 +123,40 @@ class Actor
      * @param string $biography
      * @return Actor
      */
-    public function setBiography(string $biography): void
+    public function setBiography(string $biography): Actor
     {
         $this->biography = $biography;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int|null
      */
-    public function getAvatarid(): int
+    public function getAvatarId(): ?int
     {
-        return $this->avatarid;
+        return $this->avatarId;
     }
 
     /**
-     * @param string $avatarid
+     * @param int|null $avatarid
+     * @return Actor
      */
-    public function setAvatarid(int $avatarid): void
+    public function setAvatarId(?int $avatarid): Actor
     {
-        $this->avatarid = $avatarid;
-        return $this
+        $this->avatarId = $avatarid;
+        return $this;
     }
 
-    public function delete():void
+    public function getContent(int $MID): string
+    {
+        return "<a href='DetailsActor.php?actorId={$this->getId()}'>
+                <img src='Image.php?imageId={$this->getAvatarId()}'>
+                <div> {$this->findActorRole($MID)->getRole()} </div>
+                <div> {$this->getName()} </div>
+                </a> <hr>";
+    }
+
+    public function delete(): void
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -210,7 +200,7 @@ class Actor
         } else {
             $this->update();
         }
-        return $this
+        return $this;
     }
 
     public static function create($name, $id = null): Actor
@@ -247,6 +237,49 @@ class Actor
         $stmt->execute([":Id" => $id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
         $res = $stmt->fetchAll();
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res[0];
+    }
+
+    public function findMovieByActorId(): array
+    {
+        #var_dump($this);
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+        SELECT  DISTINCT *
+        FROM    movie
+        WHERE   movie.id in (SELECT  movieId
+                             FROM    cast
+                             WHERE   peopleId = :ID)
+        SQL
+        );
+        $stmt->execute([":ID" => $this->getId()]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Movie::class);
+        $res = $stmt->fetchAll();
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res;
+    }
+
+    public function findActorRole($MID): cast
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+            SELECT  *
+            FROM    cast
+            WHERE   movieId  = :MID
+                    AND peopleId = :PID
+        SQL
+        );
+        #var_dump($this->id);
+        #var_dump($MID);
+        $stmt->execute([":PID" => $this->id, ":MID" => $MID]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Cast::class);
+        $res = $stmt->fetchAll();
+        #var_dump($res);
         if (count($res) == 0) {
             throw new EntityNotFoundException();
         }

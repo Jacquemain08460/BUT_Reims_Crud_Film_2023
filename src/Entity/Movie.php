@@ -19,24 +19,23 @@ class Movie
     private int $runtime;
     private string $tagline;
     private string $title;
-    private int|null $movieId;
-    private int $id;
+    private int|null $id;
 
     /**
-     * @param int|null $movieId
+     * @param int $id
      */
-    public function setMovieId(int $movieId): void
+    public function setId(int $id): void
     {
-        $this->movieId = $movieId;
+        $this->id = $id;
     }
 
     /**
      * Accesseur de l'id du l'instance de Movie.
      * @return int|null
      */
-    public function getMovieId(): ?int
+    public function getId(): ?int
     {
-        return $this->movieId;
+        return $this->id;
     }
 
     /**
@@ -199,12 +198,13 @@ class Movie
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getContent(int $PID): string
     {
-        return $this->id;
+        return "<a href='DetailsFilm.php?movieId={$this->getId()}'>
+                <img src='Image.php?imageId={$this->getPosterId()}'>
+                <div> {$this->getTitle()} </div> <div> {$this->getReleaseDate()} </div>
+                <div> {$this->findActorRole($PID)->getRole()} </div><hr>
+                </a>";
     }
 
     public function delete(): void
@@ -237,20 +237,20 @@ class Movie
         $stmt->execute([":PI" => $this->posterId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID => $this->id"]);
+            ":TT" => $this->title, ":ID" => $this->id]);
         return $this;
     }
 
     public function insert(): Movie
     {
-        $this->movieId = (int)MyPDO::getInstance()->lastInsertId();
+        $this->id = (int)MyPDO::getInstance()->lastInsertId();
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
                 INSERT  INTO ARTIST (posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title, movieId)
                 VALUES  (:PI, :OL, :OT, :OV, :RD, :RT, :TG, :TT, :ID)
             SQL
         );
-        $stmt->execute([":PI" => $this->movieId, ":OL" => $this->originalLanguage,
+        $stmt->execute([":PI" => $this->id, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
             ":TT" => $this->title, ":ID" => $this->id]);
@@ -259,11 +259,12 @@ class Movie
 
     public function save(): Movie
     {
-        if ($this->movieId == null) {
+        if ($this->id == null) {
             $this->insert();
         } else {
             $this->update();
         }
+        return $this;
     }
 
     public static function create(
@@ -320,19 +321,17 @@ class Movie
         return $res[0];
     }
 
-
-    public function findActorByMovieId():array
+    public function findActorByMovieId(): array
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
         SELECT *
-        FROM people 
-
-        WHERE people.id in (SELECT peopleId
-                            FROM cast
-                            WHERE movieId = :ID)
-                  = :ID
-        SQL);
+        FROM people
+        WHERE people.id in (SELECT  peopleId
+                            FROM    cast
+                            WHERE   movieId = :ID)
+        SQL
+        );
         $stmt->execute([":ID" => $this->getId()]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
         $res = $stmt->fetchAll();
@@ -340,8 +339,27 @@ class Movie
             throw new EntityNotFoundException();
         }
         return $res;
-
     }
 
-
+    public function findActorRole($PID): cast
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+            SELECT  *
+            FROM    cast
+            WHERE   movieId  = :MID
+                    AND peopleId = :PID
+        SQL
+        );
+        #var_dump($this->id);
+        #var_dump($MID);
+        $stmt->execute([":MID" => $this->id, ":PID" => $PID]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Cast::class);
+        $res = $stmt->fetchAll();
+        #var_dump($res);
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res[0];
+    }
 }
