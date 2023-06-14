@@ -10,7 +10,7 @@ use PDO;
 
 class Movie
 {
-    private int $posterId;
+    private int|null $posterId;
     private string $originalLanguage;
     private string $originalTitle;
     private string $overview;
@@ -23,9 +23,9 @@ class Movie
 
     /**
      * Modificateur de l'attribut id.
-     * @param int $id
+     * @param int|null $id
      */
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -41,21 +41,19 @@ class Movie
 
     /**
      * Accesseur de l'attribut posterId de l'entité.
-     * @return int
+     * @return int|null
      */
     public function getPosterId(): ?int
     {
         return $this->posterId;
-
-
     }
 
     /**
      * Modificateur de l'attribut posterId de l'entité.
-     * @param int $posterId
+     * @param int|null $posterId
      * @return Movie
      */
-    public function setPosterId(int $posterId): Movie
+    public function setPosterId(?int $posterId): Movie
     {
         $this->posterId = $posterId;
         return $this;
@@ -192,6 +190,7 @@ class Movie
 
     /**
      * Modificateur de l'attribut title de l'entité.
+     * C'est le seul attribut de Movie qui est obligatoire.
      * @param string $title
      * @return Movie
      */
@@ -210,7 +209,7 @@ class Movie
      */
     public function getContent(int $PID): string
     {
-        return  "<a href='DetailsFilm.php?movieId={$this->getId()}'>
+        return "<a href='DetailsFilm.php?movieId={$this->getId()}'>
                  <img src='ImageMovie.php?imageId={$this->getPosterId()}'>
                  <div> {$this->getTitle()} </div> <div> {$this->getReleaseDate()} </div>
                  <div> {$this->findActorRole($PID)->getRole()} </div><hr>
@@ -253,10 +252,13 @@ class Movie
                 WHERE   id = :ID
     SQL
         );
+        echo "Début de Test";
         $stmt->execute([":PI" => $this->posterId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
-            ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID" => $this->id]);
+            ":RD" => $this->releaseDate, ":RT" => $this->runtime,
+            ":TG" => $this->tagline,  ":TT" => $this->title,
+            ":ID" => $this->id]);
+        echo "Fin de Test";
         return $this;
     }
 
@@ -266,17 +268,20 @@ class Movie
      */
     public function insert(): Movie
     {
-        $this->id = (int)MyPDO::getInstance()->lastInsertId();
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-                INSERT  INTO ARTIST (posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title, movieId)
-                VALUES  (:PI, :OL, :OT, :OV, :RD, :RT, :TG, :TT, :ID)
+                INSERT  INTO MOVIE (posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title)
+                VALUES  (:PI, :OL, :OT, :OV, :RD, :RT, :TG, :TT);
             SQL
         );
-        $stmt->execute([":PI" => $this->id, ":OL" => $this->originalLanguage,
-            ":OT" => $this->originalTitle, ":OV" => $this->overview,
-            ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID" => $this->id]);
+        var_dump($this);
+        echo "Quelque chose ne vas pas... pas...";
+        $stmt->execute([":PI" => $this->getPosterId(), ":OL" => $this->getOriginalLanguage(),
+            ":OT" => $this->getOriginalTitle(), ":OV" => $this->getOverview(),
+            ":RD" => $this->getReleaseDate(), ":RT" => $this->getRuntime(),
+            ":TG" => $this->getTagline(), ":TT" => $this->getTitle()]);
+        echo "Si c'est passé, ce message s'affiche";
+        $this->id = (int)MyPDO::getInstance()->lastInsertId();
         return $this;
     }
 
@@ -287,7 +292,7 @@ class Movie
      */
     public function save(): Movie
     {
-        if ($this->id == null) {
+        if ($this->getId() == null) {
             $this->insert();
         } else {
             $this->update();
@@ -297,7 +302,7 @@ class Movie
 
     /**
      * Créateur d'instance de Movie définissant tous ses attributs.
-     * @param int $posterId
+     * @param int|null $posterId
      * @param string $originalLanguage
      * @param string $originalTitle
      * @param string $overview
@@ -305,17 +310,19 @@ class Movie
      * @param int $runtime
      * @param string $tagline
      * @param string $title
+     * @param int|null $id
      * @return Movie
      */
     public static function create(
-        int    $posterId,
-        string $originalLanguage,
-        string $originalTitle,
-        string $overview,
-        string $releaseDate,
-        int    $runtime,
-        string $tagline,
-        string $title
+        int|null $posterId,
+        string   $originalLanguage,
+        string   $originalTitle,
+        string   $overview,
+        string   $releaseDate,
+        int      $runtime,
+        string   $tagline,
+        string   $title,
+        int|null $id
     ): Movie {
         $movie = new Movie();
         $movie->setPosterId($posterId);
@@ -326,6 +333,7 @@ class Movie
         $movie->setRuntime($runtime);
         $movie->setTagline($tagline);
         $movie->setTitle($title);
+        $movie->setId($id);
         return $movie;
     }
 
@@ -424,7 +432,7 @@ class Movie
      * @param int $genreId genre paramétré.
      * @return array Liste des films
      */
-    public static function getMovieByGenre(int $genreId):array
+    public static function getMovieByGenre(int $genreId): array
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -450,13 +458,11 @@ class Movie
      * @param int|null $genreId genre paramétré
      * @return array Liste des films
      */
-    public static function getMovies(int $genreId=null):array
+    public static function getMovies(int $genreId = null): array
     {
-        if(!isset($genreId))
-        {
+        if (!isset($genreId)) {
             return Movie::getAll();
-        }else
-        {
+        } else {
             return Movie::getMovieByGenre($genreId);
         }
     }

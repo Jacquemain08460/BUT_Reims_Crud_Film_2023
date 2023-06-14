@@ -10,7 +10,7 @@ use Entity\Movie;
 use Entity\Image;
 use Html\MovieWebPage;
 
-MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 $WebPage = new MovieWebPage('Movies');
 
