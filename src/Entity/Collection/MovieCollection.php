@@ -63,10 +63,10 @@ class MovieCollection
     {
         if(!isset($genreId))
         {
-            return Movie::getAll();
+            return MovieCollection::getAll();
         }else
         {
-            return Movie::getMovieByGenre($genreId);
+            return MovieCollection::getMovieByGenre($genreId);
         }
     }
 }
