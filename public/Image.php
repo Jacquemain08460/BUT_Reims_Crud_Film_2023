@@ -12,7 +12,7 @@ try {
         throw new ParameterException("The GET parameter 'imageId' is not present or is not compatible");
     }
     header('Content-Type: image/jpeg');
-    $Instance = Image::findById((int)$_GET['coverId']);
+    $Instance = Image::findById((int)$_GET['imageId']);
     echo $Instance -> getJpeg();
 } catch (ParameterException) {
     http_response_code(400);
