@@ -172,7 +172,7 @@ class Actor
      * Méthode d'instance permettant de receuillir les informations importantes d'une instance
      * d'acteur, prenant en paramètre l'id d'un film. Renvoie donc une chaîne de caractères contenant :
      * -le lien vers la page contenant les détails de l'acteur
-     * -l'avatar (portrait/image) de l'acteur, grâce à un lien vers Image.php
+     * -l'avatar (portrait/image) de l'acteur, grâce à un lien vers ImageActor.php
      * -Le rôle de l'acteur dans le film
      * -Le nom de l'acteur
      * @param int $MID Id du film correspondant à la recherche
@@ -181,8 +181,8 @@ class Actor
     public function getContent(int $MID): string
     {
         return "<a href='DetailsActor.php?actorId={$this->getId()}'>
-                <img src='Image.php?imageId={$this->getAvatarId()}'>
-                <div> {$this->findActorRole($MID)->getRole()} </div>
+               <img src='ImageActor.php?imageId={$this->getAvatarId()}'>
+               <div> {$this->findActorRole($MID)->getRole()} </div>
                 <div> {$this->getName()} </div>
                 </a> <hr>";
     }
