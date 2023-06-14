@@ -26,5 +26,33 @@ try {
 $ActorPage = new AppWebPage();
 
 $ActorPage->setTitle("Films - {$actor->getName()}");
+$ActorPage->appendContent("<img src='Image.php?imageId={$actor->getAvatarId()}'>");
+
+$content = <<<HTML
+                <div>
+                    <p>{$actor->getAvatarId()}</p>
+                    <p>{$actor->getBirthday()}</p>
+                    <p>{$actor->getDeathday()}</p>
+                    <p>{$actor->getName()}</p>
+                    <p>{$actor->getBiography()}</p>
+                    <p>{$actor->getPlaceOfBirth()}</p>
+                    <p>{$actor->getid()}</p>
+                </div>
+            HTML;
+
+$ActorPage->appendContent($content);
+
+$Films= $actor->findMovieByActorId();
+$content= "";
+
+foreach($Films as $film) {
+    #var_dump($film);
+    $content .= "<div>
+                    <img src='Image.php?imageId={$film->getPosterId()}'>
+                    <a href='DetailsFilm.php?movieId={$film->getId()}'>{$film->getTitle()}</a><hr>
+                 </div>";
+}
+
+$ActorPage->appendContent($content);
 
 echo $ActorPage->toHTML();
