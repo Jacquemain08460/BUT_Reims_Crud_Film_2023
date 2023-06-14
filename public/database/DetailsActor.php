@@ -8,7 +8,7 @@ use Database\MyPdo;
 use Entity\Actor;
 use Html\MovieWebPage;
 
-#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 if (!isset($_GET["actorId"]) || !ctype_digit($_GET["actorId"])) {
     header("Location: index.php");
@@ -28,24 +28,22 @@ $ActorPage = new MovieWebPage();
 $ActorPage->setTitle("Films - {$actor->getName()}");
 
 #try {
-#    $ActorPage->appendContent("<img src='Image.php?imageId={$actor->getAvatarId()}'>");
+#    $ActorPage->appendContent("<img src='ImageActor.php?imageId={$actor->getAvatarId()}'>");
 #} catch (\Entity\Exception\EntityNotFoundException) {
 #    header("Location: image.php?imageId=-10");
 #    http_response_code(404);
 #    exit(404);
 #}
 
-$ActorPage->appendContent("<img src='Image.php?imageId={$actor->getAvatarId()}'>");
+$ActorPage->appendContent("<img src='ImageActor.php?imageId={$actor->getAvatarId()}'>");
 
 $content = <<<HTML
                 <div>
-                    <p>{$actor->getAvatarId()}</p>
+                    <p>{$actor->getName()}</p>
+                    <p>{$actor->getPlaceOfBirth()}</p>
                     <p>{$actor->getBirthday()}</p>
                     <p>{$actor->getDeathday()}</p>
-                    <p>{$actor->getName()}</p>
                     <p>{$actor->getBiography()}</p>
-                    <p>{$actor->getPlaceOfBirth()}</p>
-                    <p>{$actor->getid()}</p>
                 </div>
             HTML;
 
