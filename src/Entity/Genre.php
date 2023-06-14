@@ -43,7 +43,7 @@ class Genre
      * Acesseur de tous les genres de la base de données.
      * @return array Liste des genres
      */
-    public static function getAll():array
+    public static function getAll(): array
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'

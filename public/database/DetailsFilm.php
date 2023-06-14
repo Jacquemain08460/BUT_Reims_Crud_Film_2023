@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 require_once '../../vendor/autoload.php';
@@ -49,10 +50,9 @@ $content .="<hr>";
 #boucle acteur
 $acteurs= $film->findActorByMovieId();
 $content = "";
-foreach($acteurs as $acteur){
+foreach($acteurs as $acteur) {
     $content .= $acteur -> getContent($film->getId());
 }
 $moviePage->appendContent($content);
 
 echo $moviePage->toHTML();
-

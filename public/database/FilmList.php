@@ -23,12 +23,12 @@ $MOVIES =MovieCollection::getMovies();
 $_POST["genreId"]="";
 $WebPage->appendContent("<form name='select' method='POST' action='TrieFilm.php?genreId={$_POST["genreId"]}'>");
 $WebPage->appendContent("<select name='genreId'>");
-foreach($genres as $genre){
-    $WebPage->appendContent( <<<HTML
+foreach($genres as $genre) {
+    $WebPage->appendContent(<<<HTML
                                         <option value={$genre->getId()}>{$genre->getName()}</option>
                                HTML);
 }
-$WebPage->appendContent( <<<HTML
+$WebPage->appendContent(<<<HTML
                                         <option value={}>Tous</option>
                                HTML);
 $WebPage->appendContent("</select>");

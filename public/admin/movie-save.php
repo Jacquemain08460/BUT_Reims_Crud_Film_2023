@@ -12,9 +12,8 @@ try {
     $Form = new MovieForm();
     $Form -> setEntityFromQueryString();
     $Form -> goSave();
-    echo 'HAAAAAAAAAAAA';
-    #header("Location: movie-form.php");
-    #exit(404);
+    header("Location: movie-form.php");
+    exit();
 } catch (ParameterException) {
     http_response_code(400);
 } catch (Exception) {

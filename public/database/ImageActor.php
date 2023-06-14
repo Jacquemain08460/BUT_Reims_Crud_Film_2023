@@ -11,12 +11,11 @@ use Entity\Exception\ParameterException;
 
 
 try {
+    header('Content-Type: image/jpeg');
     if (!isset($_GET['imageId']) || !ctype_digit($_GET['imageId'])) {
-        header('Content-Type: image/jpeg');
         readfile("defaultActor.png");
         #throw new ParameterException("The GET parameter 'imageId' is not present or is not compatible");
-    }else{
-        header('Content-Type: image/jpeg');
+    } else {
         $Instance = Image::findById((int)$_GET['imageId']);
         echo $Instance -> getJpeg();
     }
