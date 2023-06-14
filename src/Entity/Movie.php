@@ -22,6 +22,7 @@ class Movie
     private int|null $id;
 
     /**
+     * Modificateur de l'attribut id.
      * @param int $id
      */
     public function setId(int $id): void
@@ -30,7 +31,7 @@ class Movie
     }
 
     /**
-     * Accesseur de l'id du l'instance de Movie.
+     * Accesseur de l'id de l'instance de Movie.
      * @return int|null
      */
     public function getId(): ?int
@@ -42,9 +43,11 @@ class Movie
      * Accesseur de l'attribut posterId de l'entité.
      * @return int
      */
-    public function getPosterId(): int
+    public function getPosterId(): ?int
     {
         return $this->posterId;
+
+
     }
 
     /**
@@ -198,15 +201,26 @@ class Movie
         return $this;
     }
 
+    /**
+     * Méthode affichant le poster, le titre, la date de sortie,
+     * ses acteurs ainsi que leur rôle. Dans le cas où le film n'aurait
+     * pas de poster définis, une image sera affiché à la place.
+     * @param int $PID
+     * @return string
+     */
     public function getContent(int $PID): string
     {
-        return "<a href='DetailsFilm.php?movieId={$this->getId()}'>
-                <img src='Image.php?imageId={$this->getPosterId()}'>
-                <div> {$this->getTitle()} </div> <div> {$this->getReleaseDate()} </div>
-                <div> {$this->findActorRole($PID)->getRole()} </div><hr>
-                </a>";
+        return  "<a href='DetailsFilm.php?movieId={$this->getId()}'>
+                 <img src='ImageMovie.php?imageId={$this->getPosterId()}'>
+                 <div> {$this->getTitle()} </div> <div> {$this->getReleaseDate()} </div>
+                 <div> {$this->findActorRole($PID)->getRole()} </div><hr>
+                 </a>";
     }
 
+    /**
+     * Supprime le film correspondant de la base de données.
+     * @return void
+     */
     public function delete(): void
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -218,6 +232,11 @@ class Movie
         $stmt->execute([":ID" => $this->id]);
     }
 
+    /**
+     * Modifie le film sélectionnée dans la base de données, pour
+     * qu'il ait les mêmes valeur que le film appellant la méthode.
+     * @return $this film ayant appellé la fonction
+     */
     public function update(): Movie
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -241,6 +260,10 @@ class Movie
         return $this;
     }
 
+    /**
+     * Insère dans la base de données le film ayant appellé la fonction.
+     * @return $this
+     */
     public function insert(): Movie
     {
         $this->id = (int)MyPDO::getInstance()->lastInsertId();
@@ -252,11 +275,16 @@ class Movie
         );
         $stmt->execute([":PI" => $this->id, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
-            ":RD" => $this->releaseDate, ":RT" => $this->runtime,
-            ":TG" => $this->tagline, ":TT" => $this->title, ":ID" => $this->id]);
+            ":RD" => $this->releaseDate, ":TG" => $this->tagline,
+            ":TT" => $this->title, ":ID" => $this->id]);
         return $this;
     }
 
+    /**
+     * Si le film n'est pas présent dans la base, elle est inséré,
+     * sinon elle est mise à jour.
+     * @return $this le film sauvegardé
+     */
     public function save(): Movie
     {
         if ($this->id == null) {
@@ -267,6 +295,18 @@ class Movie
         return $this;
     }
 
+    /**
+     * Créateur d'instance de Movie définissant tous ses attributs.
+     * @param int $posterId
+     * @param string $originalLanguage
+     * @param string $originalTitle
+     * @param string $overview
+     * @param string $releaseDate
+     * @param int $runtime
+     * @param string $tagline
+     * @param string $title
+     * @return Movie
+     */
     public static function create(
         int    $posterId,
         string $originalLanguage,
@@ -275,8 +315,7 @@ class Movie
         string $releaseDate,
         int    $runtime,
         string $tagline,
-        string $title,
-        int    $id
+        string $title
     ): Movie {
         $movie = new Movie();
         $movie->setPosterId($posterId);
@@ -287,10 +326,13 @@ class Movie
         $movie->setRuntime($runtime);
         $movie->setTagline($tagline);
         $movie->setTitle($title);
-        $movie->setId($id);
         return $movie;
     }
 
+    /**
+     * Retourne tous les film présents dans la base de données.
+     * @return array liste de tout les films.
+     */
     public static function getAll(): array
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -305,6 +347,11 @@ class Movie
         return $stmt->fetchAll();
     }
 
+    /**
+     * Fonction static renvoyant le film correspond à l'id saisit.
+     * @param int $Id id du film
+     * @return Movie film
+     */
     public static function findById(int $Id): Movie
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -323,6 +370,10 @@ class Movie
         return $res[0];
     }
 
+    /**
+     * Liste les acteurs ayant joué dans le film.
+     * @return array liste des acteurs
+     */
     public function findActorByMovieId(): array
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -343,6 +394,12 @@ class Movie
         return $res;
     }
 
+    /**
+     * Acesseur du role de l'acteur dont on saisie l'id, ayant joué
+     * dans le film appellant la méthode.
+     * @param int $PID id de l'acteur
+     * @return cast rôle de l'acteur
+     */
     public function findActorRole($PID): cast
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -353,15 +410,54 @@ class Movie
                     AND peopleId = :PID
         SQL
         );
-        #var_dump($this->id);
-        #var_dump($MID);
         $stmt->execute([":MID" => $this->id, ":PID" => $PID]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, Cast::class);
         $res = $stmt->fetchAll();
-        #var_dump($res);
         if (count($res) == 0) {
             throw new EntityNotFoundException();
         }
         return $res[0];
+    }
+
+    /**
+     * Acesseur de l'ensemble des film du genre paramétré.
+     * @param int $genreId genre paramétré.
+     * @return array Liste des films
+     */
+    public static function getMovieByGenre(int $genreId):array
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+            SELECT  *
+            FROM    movie
+                    JOIN movie_genre ON (movie.id = movie_genre.movieId)
+                    JOIN genre ON (movie_genre.genreId = genre.id)
+            WHERE genre.id =  :ID  
+        SQL
+        );
+        $stmt->execute([":ID" => $genreId]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Movie::class);
+        $res = $stmt->fetchAll();
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res;
+    }
+
+    /**
+     * Acesseur de tout les films, soit d'un genre si
+     * paramétrés, soit tout les films de la base de données.
+     * @param int|null $genreId genre paramétré
+     * @return array Liste des films
+     */
+    public static function getMovies(int $genreId=null):array
+    {
+        if(!isset($genreId))
+        {
+            return Movie::getAll();
+        }else
+        {
+            return Movie::getMovieByGenre($genreId);
+        }
     }
 }
