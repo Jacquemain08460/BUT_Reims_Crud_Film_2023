@@ -16,7 +16,7 @@ use PDO;
 
 class Actor
 {
-    private int $avatarId;
+    private int|null $avatarId;
     private string|null $birthday;
     private string|null $deathday;
     private string $name;
@@ -58,24 +58,6 @@ class Actor
     public function setName(string $name): Actor
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getActorId(): ?int
-    {
-        return $this->actorid;
-    }
-
-    /**
-     * @param int|null $id
-     * @return Actor
-     */
-    private function setActorId(?int $id): Actor
-    {
-        $this->actorid = $id;
         return $this;
     }
 
@@ -251,5 +233,26 @@ class Actor
             throw new EntityNotFoundException();
         }
         return $res[0];
+    }
+
+    public function findMovieByActorId(): array
+    {
+        #var_dump($this);
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+        SELECT  *
+        FROM    movie
+        WHERE   movie.id in (SELECT  movieId
+                             FROM    cast
+                             WHERE   peopleId = :ID)
+        SQL
+        );
+        $stmt->execute([":ID" => $this->getId()]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Movie::class);
+        $res = $stmt->fetchAll();
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res;
     }
 }

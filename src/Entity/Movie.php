@@ -312,7 +312,6 @@ class Movie
         return $res[0];
     }
 
-
     public function findActorByMovieId(): array
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -331,8 +330,5 @@ class Movie
             throw new EntityNotFoundException();
         }
         return $res;
-
     }
-
-
 }

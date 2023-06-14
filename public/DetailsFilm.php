@@ -27,32 +27,33 @@ $moviePage = new AppWebPage();
 
 $moviePage->setTitle("Films - {$film->getTitle()}");
 
-$contenu =
+$moviePage->appendContent("<img src='Image.php?imageId={$film->getPosterId()}'>");
+$content =
     <<<'HTML'
      <div>
      HTML;
-$contenu .= "<p>{$film->getTitle()}</p>\n";
-$contenu .="<p>{$film->getReleaseDate()}</p>";
-$contenu .="<p>{$film->getOriginalTitle()}</p>";
-$contenu .="<p>{$film->getTagline()}</p>";
-$contenu .="<p>{$film->getOverview()}</p>";
-$contenu .="</div>";
+$content .= "<p>{$film->getTitle()}</p>\n";
+$content .="<p>{$film->getReleaseDate()}</p>";
+$content .="<p>{$film->getOriginalTitle()}</p>";
+$content .="<p>{$film->getTagline()}</p>";
+$content .="<p>{$film->getOverview()}</p>";
+$content .="</div>";
 
-$moviePage->appendContent($contenu);
-$contenu .="";
+$moviePage->appendContent($content);
+$content .="<hr>";
 #boucle acteur
 $acteurs= $film->findActorByMovieId();
-$contenu = "";
+$content = "";
 foreach($acteurs as $acteur){
     #var_dump($acteur);
     #$acteur = Actor::findById($acteur->getActorId());
-    $contenu .= "<div>";
+    $content .= "<div>";
     #$contenu .="<a href='actor.php?actorId={$acteur->getActorId()}'>";
-    $contenu .="<img src='Image.php?imageId={$acteur->getAvatarId()}'>";
+    $content .="<img src='Image.php?imageId={$acteur->getAvatarId()}'>";
     #$contenu .="<p>{Cast::findActorRole($acteur->getActorId())}</p>";
-    $contenu .="<a href='DetailsActor.php?actorId={$acteur->getId()}'>{$acteur->getname()}</a><hr></div>";
+    $content .="<a href='DetailsActor.php?actorId={$acteur->getId()}'>{$acteur->getname()}</a><hr></div>";
 }
-$moviePage->appendContent($contenu);
+$moviePage->appendContent($content);
 
 echo $moviePage->toHTML();
 
