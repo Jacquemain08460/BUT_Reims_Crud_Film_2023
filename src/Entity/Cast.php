@@ -17,7 +17,8 @@ class Cast
     private int $id;
 
     /**
-     * @return int
+     * Accesseur de l'id du film correspondant au casting.
+     * @return int id du film
      */
     public function getMovieId(): int
     {
@@ -25,8 +26,10 @@ class Cast
     }
 
     /**
-     * @param int $movieId
-     * @return Cast
+     * Modificateur de l'id de film associé au casting
+     * (l'affecte à un autre film).
+     * @param int $movieId nouvel id de film
+     * @return Cast Casting subissant la modification
      */
     public function setMovieId(int $movieId): Cast
     {
@@ -35,7 +38,8 @@ class Cast
     }
 
     /**
-     * @return int
+     * Acesseur de l'id de la personne affecté au casting.
+     * @return int id de la personne
      */
     public function getPeopleId(): int
     {
@@ -43,8 +47,10 @@ class Cast
     }
 
     /**
-     * @param int $peopleId
-     * @return Cast
+     * Modificateur de l'id de personne affecté au casting
+     * (affecte le casting à une autre personne).
+     * @param int $peopleId nouvel id de personne
+     * @return Cast Casting modifié
      */
     public function setPeopleId(int $peopleId): Cast
     {
@@ -54,7 +60,8 @@ class Cast
 
 
     /**
-     * @return string
+     * Acesseur du rôle attribué au casting.
+     * @return string rôle du castiong
      */
     public function getRole(): string
     {
@@ -62,8 +69,9 @@ class Cast
     }
 
     /**
-     * @param string $role
-     * @return Cast
+     * Modificateur du rôle attribué (attribue un autre rôle).
+     * @param string $role nouveau rôle
+     * @return Cast casting modifié
      */
     public function setRole(string $role): Cast
     {
@@ -72,7 +80,8 @@ class Cast
     }
 
     /**
-     * @return int
+     * Acesseur de l'index de l'ordre du casting.
+     * @return int index
      */
     public function getOrderIndex(): int
     {
@@ -80,8 +89,9 @@ class Cast
     }
 
     /**
-     * @param int $orderIndex
-     * @return Cast
+     * Modificateur de l'index de l'odre du casting.
+     * @param int $orderIndex nouvel index
+     * @return Cast casting modifié
      */
     public function setOrderIndex(int $orderIndex): Cast
     {
@@ -90,7 +100,8 @@ class Cast
     }
 
     /**
-     * @return int
+     * Acesseur de l'id du casting
+     * @return int id du casting
      */
     public function getId(): int
     {
@@ -98,8 +109,9 @@ class Cast
     }
 
     /**
-     * @param int $id
-     * @return Cast
+     * Modificateur de l'id du casting
+     * @param int $id nouvel id du casting
+     * @return Cast casting modifié
      */
     public function setId(int $id): Cast
     {
@@ -107,3 +119,4 @@ class Cast
         return $this;
     }
 }
+
