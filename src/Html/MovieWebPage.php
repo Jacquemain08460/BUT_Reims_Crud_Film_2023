@@ -33,7 +33,7 @@ class AppWebPage extends WebPage
                                 </div>
                             </content>
                             <footer class="footer">
-                                {$this->getLastModification()}
+                                Dernière modification : {$this->getLastModification()}
                             </footer>
                         </body>
                     </html>

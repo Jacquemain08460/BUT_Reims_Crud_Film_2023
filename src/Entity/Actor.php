@@ -6,11 +6,10 @@ namespace Entity;
 
 use Database\MyPdo;
 use Entity\All\AllActors;
-
-#use Entity\Exception;
-
 use Entity\Exception\EntityNotFoundException;
 use PDO;
+
+#use Entity\Exception;
 
 #use function PHPUnit\Framework\throwException;
 
@@ -148,6 +147,15 @@ class Actor
         return $this;
     }
 
+    public function getContent(int $MID): string
+    {
+        return "<a href='DetailsActor.php?actorId={$this->getId()}'>
+                <img src='Image.php?imageId={$this->getAvatarId()}'>
+                <div> {$this->findActorRole($MID)->getRole()} </div>
+                <div> {$this->getName()} </div>
+                </a> <hr>";
+    }
+
     public function delete(): void
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -240,7 +248,7 @@ class Actor
         #var_dump($this);
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
-        SELECT  *
+        SELECT  DISTINCT *
         FROM    movie
         WHERE   movie.id in (SELECT  movieId
                              FROM    cast
@@ -254,5 +262,27 @@ class Actor
             throw new EntityNotFoundException();
         }
         return $res;
+    }
+
+    public function findActorRole($MID): cast
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+            SELECT  *
+            FROM    cast
+            WHERE   movieId  = :MID
+                    AND peopleId = :PID
+        SQL
+        );
+        #var_dump($this->id);
+        #var_dump($MID);
+        $stmt->execute([":PID" => $this->id, ":MID" => $MID]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Cast::class);
+        $res = $stmt->fetchAll();
+        #var_dump($res);
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res[0];
     }
 }

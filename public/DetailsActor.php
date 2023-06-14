@@ -6,7 +6,7 @@ require_once '../vendor/autoload.php';
 
 use Database\MyPdo;
 use Entity\Actor;
-use Html\AppWebPage;
+use Html\MovieWebPage;
 
 #MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
@@ -23,9 +23,18 @@ try {
     exit(404);
 }
 
-$ActorPage = new AppWebPage();
+$ActorPage = new MovieWebPage();
 
 $ActorPage->setTitle("Films - {$actor->getName()}");
+
+#try {
+#    $ActorPage->appendContent("<img src='Image.php?imageId={$actor->getAvatarId()}'>");
+#} catch (\Entity\Exception\EntityNotFoundException) {
+#    header("Location: image.php?imageId=-10");
+#    http_response_code(404);
+#    exit(404);
+#}
+
 $ActorPage->appendContent("<img src='Image.php?imageId={$actor->getAvatarId()}'>");
 
 $content = <<<HTML
@@ -42,15 +51,11 @@ $content = <<<HTML
 
 $ActorPage->appendContent($content);
 
-$Films= $actor->findMovieByActorId();
+$Films = $actor->findMovieByActorId();
 $content= "";
 
 foreach($Films as $film) {
-    #var_dump($film);
-    $content .= "<div>
-                    <img src='Image.php?imageId={$film->getPosterId()}'>
-                    <a href='DetailsFilm.php?movieId={$film->getId()}'>{$film->getTitle()}</a><hr>
-                 </div>";
+    $content .= $film -> getContent($actor->getId());
 }
 
 $ActorPage->appendContent($content);
