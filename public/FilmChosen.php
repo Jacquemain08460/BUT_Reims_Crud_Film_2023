@@ -30,7 +30,6 @@ $moviePage->setTitle("Films - {$film->getTitle()}");
 $contenu =
     <<<'HTML'
      <div>
-     
      HTML;
 $contenu .= "<p>{$film->getTitle()}</p>\n";
 $contenu .="<p>{$film->getReleaseDate()}</p>";
@@ -45,6 +44,7 @@ $contenu .="";
 $acteurs= $film->findActorByMovieId();
 $contenu = "";
 foreach($acteurs as $acteur){
+    #var_dump($acteur);
     #$acteur = Actor::findById($acteur->getActorId());
     $contenu .= "<div>";
     #$contenu .="<a href='actor.php?actorId={$acteur->getActorId()}'>";

@@ -22,7 +22,7 @@ class Actor
     private string|null $deathday;
     private string|null $birthplace;
     private string|null $biography;
-    private int|null $avatarid;
+    private int|null $avatarId;
     private int $id;
 
 
@@ -143,30 +143,31 @@ class Actor
      * @param string $biography
      * @return Actor
      */
-    public function setBiography(string $biography): void
+    public function setBiography(string $biography): Actor
     {
         $this->biography = $biography;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int|null
      */
-    public function getAvatarid(): int
+    public function getAvatarId(): ?int
     {
-        return $this->avatarid;
+        return $this->avatarId;
     }
 
     /**
-     * @param string $avatarid
+     * @param int|null $avatarid
+     * @return Actor
      */
-    public function setAvatarid(int $avatarid): void
+    public function setAvatarId(?int $avatarid): Actor
     {
-        $this->avatarid = $avatarid;
-        return $this
+        $this->avatarId = $avatarid;
+        return $this;
     }
 
-    public function delete():void
+    public function delete(): void
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -210,7 +211,7 @@ class Actor
         } else {
             $this->update();
         }
-        return $this
+        return $this;
     }
 
     public static function create($name, $id = null): Actor

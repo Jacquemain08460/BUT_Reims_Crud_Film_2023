@@ -264,6 +264,7 @@ class Movie
         } else {
             $this->update();
         }
+        return $this;
     }
 
     public static function create(
@@ -321,18 +322,17 @@ class Movie
     }
 
 
-    public function findActorByMovieId():array
+    public function findActorByMovieId(): array
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
         SELECT *
-        FROM people 
-
-        WHERE people.id in (SELECT peopleId
-                            FROM cast
-                            WHERE movieId = :ID)
-                  = :ID
-        SQL);
+        FROM people
+        WHERE people.id in (SELECT  peopleId
+                            FROM    cast
+                            WHERE   movieId = :ID)
+        SQL
+        );
         $stmt->execute([":ID" => $this->getId()]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
         $res = $stmt->fetchAll();

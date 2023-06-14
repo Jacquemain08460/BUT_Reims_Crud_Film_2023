@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Entity;
@@ -18,7 +19,7 @@ class Cast
     /**
      *
      */
-    public static function findActorRole(int $ID):?string
+    public static function findActorRole(int $ID): ?string
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
