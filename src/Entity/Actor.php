@@ -18,30 +18,26 @@ class Actor
 {
     private int $actorid;
     private string $name;
-    private string $birthday;
+    private string|null $birthday;
     private string|null $deathday;
-    private string $birthplace;
-    private string $biography;
-    private string $avatarid;
-    private string $id;
+    private string|null $birthplace;
+    private string|null $biography;
+    private int|null $avatarid;
+    private int $id;
 
-    private function __construct()
-    {
-    }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
-     * @return Actor
+     * @param int $id
      */
-    public function setId(string $id): Actor
+    public function setId(int $id): Actor
     {
         $this->id = $id;
         return $this;
@@ -94,7 +90,6 @@ class Actor
 
     /**
      * @param string $birthday
-     * @return Actor
      */
     public function setBirthday(string $birthday): Actor
     {
@@ -112,9 +107,8 @@ class Actor
 
     /**
      * @param string|null $deathday
-     * @return Actor
      */
-    public function setDeathday(?string $deathday): Actor
+    public function setDeathday(string $deathday): Actor
     {
         $this->deathday = $deathday;
         return $this;
@@ -130,7 +124,6 @@ class Actor
 
     /**
      * @param string $birthplace
-     * @return Actor
      */
     public function setBirthplace(string $birthplace): Actor
     {
@@ -139,9 +132,9 @@ class Actor
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getBiography(): string
+    public function getBiography(): ?string
     {
         return $this->biography;
     }
@@ -150,7 +143,7 @@ class Actor
      * @param string $biography
      * @return Actor
      */
-    public function setBiography(string $biography): Actor
+    public function setBiography(string $biography): void
     {
         $this->biography = $biography;
         return $this;
@@ -159,27 +152,21 @@ class Actor
     /**
      * @return string
      */
-    public function getAvatarid(): string
+    public function getAvatarid(): int
     {
         return $this->avatarid;
     }
 
     /**
      * @param string $avatarid
-     * @return Actor
      */
-    public function setAvatarid(string $avatarid): Actor
+    public function setAvatarid(int $avatarid): void
     {
         $this->avatarid = $avatarid;
-        return $this;
+        return $this
     }
 
-    public function getActorMovie(): array
-    {
-        return AllMovies::findbyActorId($this->actorid);
-    }
-
-    public function delete()
+    public function delete():void
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -190,7 +177,7 @@ class Actor
         $stmt->execute([":ID" => $this->actorid]);
     }
 
-    public function update()
+    public function update(): Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -203,7 +190,7 @@ class Actor
         return $this;
     }
 
-    public function insert()
+    public function insert(): Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -216,14 +203,14 @@ class Actor
         return $this;
     }
 
-    public function save()
+    public function save(): Actor
     {
         if ($this->actorid == null) {
             $this->insert();
         } else {
             $this->update();
         }
-        return $this;
+        return $this
     }
 
     public static function create($name, $id = null): Actor
