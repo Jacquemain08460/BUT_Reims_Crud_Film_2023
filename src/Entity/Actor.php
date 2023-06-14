@@ -37,9 +37,10 @@ class Actor
     /**
      * @param int $id
      */
-    public function setId(int $id): void
+    public function setId(int $id): Actor
     {
         $this->id = $id;
+        return $this;
     }
 
 
@@ -55,9 +56,10 @@ class Actor
      * @param string $name
      * @return Actor
      */
-    public function setName(string $name): void
+    public function setName(string $name): Actor
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -72,9 +74,10 @@ class Actor
      * @param int|null $id
      * @return Actor
      */
-    private function setActorId(?int $id): void
+    private function setActorId(?int $id): Actor
     {
         $this->actorid = $id;
+        return $this;
     }
 
     /**
@@ -88,9 +91,10 @@ class Actor
     /**
      * @param string $birthday
      */
-    public function setBirthday(string $birthday): void
+    public function setBirthday(string $birthday): Actor
     {
         $this->birthday = $birthday;
+        return $this;
     }
 
     /**
@@ -104,9 +108,10 @@ class Actor
     /**
      * @param string|null $deathday
      */
-    public function setDeathday(string $deathday): void
+    public function setDeathday(string $deathday): Actor
     {
         $this->deathday = $deathday;
+        return $this;
     }
 
     /**
@@ -120,9 +125,10 @@ class Actor
     /**
      * @param string $birthplace
      */
-    public function setBirthplace(string $birthplace): void
+    public function setBirthplace(string $birthplace): Actor
     {
         $this->birthplace = $birthplace;
+        return $this;
     }
 
     /**
@@ -140,6 +146,7 @@ class Actor
     public function setBiography(string $biography): void
     {
         $this->biography = $biography;
+        return $this;
     }
 
     /**
@@ -156,6 +163,7 @@ class Actor
     public function setAvatarid(int $avatarid): void
     {
         $this->avatarid = $avatarid;
+        return $this
     }
 
     public function delete():void
@@ -169,7 +177,7 @@ class Actor
         $stmt->execute([":ID" => $this->actorid]);
     }
 
-    public function update():void
+    public function update(): Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -179,9 +187,10 @@ class Actor
     SQL
         );
         $stmt->execute([":ID" => $this->actorid, ":NAME" => $this->name]);
+        return $this;
     }
 
-    public function insert():void
+    public function insert(): Actor
     {
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
@@ -191,22 +200,25 @@ class Actor
         );
         $stmt->execute([":NAME" => $this->name]);
         $this->actorid = (int)MyPDO::getInstance()->lastInsertId();
+        return $this;
     }
 
-    public function save():void
+    public function save(): Actor
     {
         if ($this->actorid == null) {
             $this->insert();
         } else {
             $this->update();
         }
+        return $this
     }
 
-    public static function create($name, $id = null):void
+    public static function create($name, $id = null): Actor
     {
         $actor = new Actor();
         $actor->setName($name);
         $actor->setId($id);
+        return $actor;
     }
 
     public static function getAll(): array
