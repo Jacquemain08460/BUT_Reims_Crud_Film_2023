@@ -7,17 +7,9 @@ require_once '../vendor/autoload.php';
 use Entity\Movie;
 use Html\MovieWebPage;
 
-$Form = <<<HTML
-         <form action="$action" method="post">
-            <input type="hidden" name="ID">
-            <label for="Nom">Nom de l'artiste</label>
-            <input type="text" name="Nom" required>
-            <input type="submit" value="Enregistrer">
-         </form>
-         HTML;
+$WebPage = new MovieWebPage('Accueil du site de Fay0026 et Jacq0223');
 
-$WebPage = new MovieWebPage('Movies');
-
-$WebPage -> appendContent($Form);
+$WebPage -> appendContent("<a href='movie-form.php'> Direction le formulaire !<a><hr>");
+$WebPage -> appendContent("<a href='ListeFilms.php'> Direction la base de données !<a><hr>");
 
 echo $WebPage->toHTML();

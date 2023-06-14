@@ -37,21 +37,21 @@ class MovieForm extends Movie
         <form action="$action" method="post">
             <input type="hidden" name="ID" value="{$this?->movie?->getId()}">
             <label for="Nom">Id du poster du film</label>
-            <input type="text" name="PI" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="PI" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Langue originale du film</label>
-            <input type="text" name="OL" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="OL" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Titre original du film</label>
-            <input type="text" name="OT" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="OT" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Résumé du film</label>
-            <input type="text" name="OV" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="OV" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Date de sortie du film</label>
-            <input type="text" name="RD" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="RD" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Durée du film</label>
-            <input type="text" name="RT" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="RT" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Slogan du film</label>
-            <input type="text" name="TG" value="{$this?->escapeString($this?->movie?->getTitle())}">
+            <input type="text" name="TG" value="{$this?->escapeString($this?->movie?->getTitle())}"><br>
             <label for="Nom">Titre du film</label>
-            <input type="text" name="TT" value="{$this?->escapeString($this?->movie?->getTitle())}" required>
+            <input type="text" name="TT" value="{$this?->escapeString($this?->movie?->getTitle())}" required><br>
             <input type="submit" value="Enregistrer">
          </form>
         </html>
