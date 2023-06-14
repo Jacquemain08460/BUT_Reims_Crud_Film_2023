@@ -252,13 +252,11 @@ class Movie
                 WHERE   id = :ID
     SQL
         );
-        echo "Début de Test";
         $stmt->execute([":PI" => $this->posterId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":RT" => $this->runtime,
             ":TG" => $this->tagline,  ":TT" => $this->title,
             ":ID" => $this->id]);
-        echo "Fin de Test";
         return $this;
     }
 
@@ -271,16 +269,14 @@ class Movie
         $stmt = MyPDO::getInstance()->prepare(
             <<<'SQL'
                 INSERT  INTO MOVIE (posterId, originalLanguage, originalTitle, overview, releaseDate, runtime, tagline, title)
-                VALUES  (:PI, :OL, :OT, :OV, :RD, :RT, :TG, :TT);
+                VALUES  (:PI, :OL, :OT, :OV, :RD, :RT, :TG, :TT)
             SQL
         );
         var_dump($this);
-        echo "Quelque chose ne vas pas... pas...";
         $stmt->execute([":PI" => $this->getPosterId(), ":OL" => $this->getOriginalLanguage(),
             ":OT" => $this->getOriginalTitle(), ":OV" => $this->getOverview(),
             ":RD" => $this->getReleaseDate(), ":RT" => $this->getRuntime(),
             ":TG" => $this->getTagline(), ":TT" => $this->getTitle()]);
-        echo "Si c'est passé, ce message s'affiche";
         $this->id = (int)MyPDO::getInstance()->lastInsertId();
         return $this;
     }
