@@ -8,7 +8,7 @@ use Entity\Movie;
 use Entity\Cast;
 use Html\AppWebPage;
 
-MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 if (!isset($_GET["movieId"]) || !ctype_digit($_GET["movieId"])) {
     header("Location: Movie.php");
@@ -18,7 +18,6 @@ if (!isset($_GET["movieId"]) || !ctype_digit($_GET["movieId"])) {
 try {
     $film = Movie::findById((int)$_GET['movieId']);
 } catch (\Entity\Exception\EntityNotFoundException) {
-    echo('HAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     header("Location: Movie.php");
     http_response_code(404);
     exit(404);
