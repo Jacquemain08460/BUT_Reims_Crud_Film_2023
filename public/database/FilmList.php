@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once '../../vendor/autoload.php';
 
 use Database\MyPdo;
+use Entity\Collection\MovieCollection;
 use Entity\Genre;
 use Entity\Movie;
 use Entity\Image;
@@ -17,7 +18,7 @@ $WebPage = new MovieWebPage('Movies');
 $genres = Genre::getAll();
 
 
-$MOVIES =Movie::getMovies();
+$MOVIES =MovieCollection::getMovies();
 
 $_POST["genreId"]="";
 $WebPage->appendContent("<form name='select' method='POST' action='TrieFilm.php?genreId={$_POST["genreId"]}'>");

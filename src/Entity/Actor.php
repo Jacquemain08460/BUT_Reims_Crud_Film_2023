@@ -270,24 +270,6 @@ class Actor
     }
 
     /**
-     * Méthode de classe renvoyant une liste de tout les acteurs présents dans la base de donnée.
-     * @return Acteur[] liste d'acteurs
-     */
-    public static function getAll(): array
-    {
-        $stmt = MyPDO::getInstance()->prepare(
-            <<<'SQL'
-                SELECT id, name
-                FROM people
-                ORDER BY name
-            SQL
-        );
-        $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_CLASS, Actor::class);
-        return $stmt->fetchAll();
-    }
-
-    /**
      * Méthode de classe permettant d'extraire un acteur de la base de donnée grâce
      * à l'id passé en paramètres.
      * @param int $id id de l'acteur voulu
