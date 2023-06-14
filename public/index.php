@@ -36,7 +36,7 @@ foreach ($All as $Movie) {
     #echo(gettype($Movie));
     #var_dump($Movie);
     $WebPage->appendContent("<img src='Image.php?imageId={$Movie->getPosterId()}'>");
-    $WebPage->appendContent("<a href='actor.php?movieId={$Movie->getId()}'>{$WebPage -> escapeString($Movie -> getTitle())}</a><hr>");
+    $WebPage->appendContent("<a href='FilmChosen.php?movieId={$Movie->getId()}'>{$WebPage -> escapeString($Movie -> getTitle())}</a><hr>");
 }
 
 echo $WebPage->toHTML();
