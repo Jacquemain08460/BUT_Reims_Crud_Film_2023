@@ -6,14 +6,15 @@ use Entity\Movie;
 use Entity\Exception\EntityNotFoundException;
 use Entity\Exception\ParameterException;
 use Html\MovieWebPage;
-use Html\Form\ArtistForm;
+use Html\Form\MovieForm;
 
 try {
-    $Movie = new MovieForm();
-    $Movie -> setEntityFromQueryString();
-    $Movie -> save();
-    header("Location: index.php");
-    exit();
+    $Form = new MovieForm();
+    $Form -> setEntityFromQueryString();
+    $Form -> goSave();
+    echo 'HAAAAAAAAAAAA';
+    #header("Location: movie-form.php");
+    #exit(404);
 } catch (ParameterException) {
     http_response_code(400);
 } catch (Exception) {
