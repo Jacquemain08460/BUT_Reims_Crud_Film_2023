@@ -11,14 +11,14 @@ use Html\AppWebPage;
 #MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
 
 if (!isset($_GET["movieId"]) || !ctype_digit($_GET["movieId"])) {
-    header("Location: Movie.php");
+    header("Location: DetailsFilm.php");
     exit(404);
 }
 
 try {
     $film = Movie::findById((int)$_GET['movieId']);
 } catch (\Entity\Exception\EntityNotFoundException) {
-    header("Location: Movie.php");
+    header("Location: DetailsFilm.php");
     http_response_code(404);
     exit(404);
 }
@@ -50,7 +50,7 @@ foreach($acteurs as $acteur){
     #$contenu .="<a href='actor.php?actorId={$acteur->getActorId()}'>";
     $contenu .="<img src='Image.php?imageId={$acteur->getAvatarId()}'>";
     #$contenu .="<p>{Cast::findActorRole($acteur->getActorId())}</p>";
-    $contenu .="<a href='actor.php?actorId={$acteur->getId()}'>{$acteur->getname()}</a><hr></div>";
+    $contenu .="<a href='DetailsActor.php?actorId={$acteur->getId()}'>{$acteur->getname()}</a><hr></div>";
 }
 $moviePage->appendContent($contenu);
 
