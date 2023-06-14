@@ -11,6 +11,17 @@ class MovieWebPage extends WebPage
         parent::__construct($title, $head, $body);
     }
 
+    /***
+     * Méthode la plus importante de la classe MovieWebPage. Permet de tansformer l'instance MovieWebPage en code de
+     * page HTML, voici les conditions :
+     * Le haut de page est déjà créé
+     * dans <head> sera inséré :
+     * -<titre> avec le titre de l'instance
+     * -la tête de l'instance
+     * dans <body> sera inséré le corps de l'instance
+     *
+     * @return string Code HTML complet
+     */
     public function toHTML()
     {
         $html = <<<HTML

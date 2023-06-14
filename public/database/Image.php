@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once '../../vendor/autoload.php';
+
 use Entity\Image;
 use Entity\Exception\EntityNotFoundException;
 use Entity\Exception\ParameterException;

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Entity;
 
 use Database\MyPdo;
-use Entity\Actor;
-use Entity\Exception;
 use Entity\Exception\EntityNotFoundException;
 use PDO;
 
@@ -17,16 +15,31 @@ class Image
     private string $jpeg;
     private int $id;
 
+    /**
+     * Accesseur de l'id de l'instance d'image
+     * @return int id de l'instance
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * Accesseur du jpeg de l'image, sous forme de chaîne de caractères contenant
+     * le code jpeg de l'image.
+     * @return string code jpeg de l'image
+     */
     public function getJpeg(): string
     {
         return $this->jpeg;
     }
 
+    /**
+     * Méthode d'instance permettant de trouver une image dans la base de données
+     * grâce à son id, et la renvoie en instance
+     * @param int $id Id de l'image
+     * @return Image Instance de l'image
+     */
     public static function findById(int $id): Image
     {
         $stmt = MyPDO::getInstance()->prepare(

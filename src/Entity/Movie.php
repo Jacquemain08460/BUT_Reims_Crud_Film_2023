@@ -252,8 +252,8 @@ class Movie
         );
         $stmt->execute([":PI" => $this->id, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
-            ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID" => $this->id]);
+            ":RD" => $this->releaseDate, ":RT" => $this->runtime,
+            ":TG" => $this->tagline, ":TT" => $this->title, ":ID" => $this->id]);
         return $this;
     }
 
@@ -275,7 +275,8 @@ class Movie
         string $releaseDate,
         int    $runtime,
         string $tagline,
-        string $title
+        string $title,
+        int    $id
     ): Movie {
         $movie = new Movie();
         $movie->setPosterId($posterId);
@@ -286,6 +287,7 @@ class Movie
         $movie->setRuntime($runtime);
         $movie->setTagline($tagline);
         $movie->setTitle($title);
+        $movie->setId($id);
         return $movie;
     }
 

@@ -4,6 +4,7 @@ namespace Html;
 
 class WebPage
 {
+    use StringEscaper;
     private string $head;
     private string $title;
     private string $body;
@@ -106,20 +107,6 @@ class WebPage
     public function appendToHead(string $content)
     {
         $this->head .= $content;
-    }
-
-    /***
-     * Méthode permettant de convertir une chaîne de caractère
-     * et de la protéger pour la passer sans soucis dans la
-     * page web. Retourne la chaîne protégée.
-     *
-     * @param string $string chaîne à protéger
-     * @return string chaîne protégée
-     */
-    public function escapeString(string $string)
-    {
-        $protected = htmlspecialchars($string, ENT_HTML5 | ENT_QUOTES);
-        return $protected;
     }
 
     /***
