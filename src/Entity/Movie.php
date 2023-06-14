@@ -198,6 +198,15 @@ class Movie
         return $this;
     }
 
+    public function getContent(int $PID): string
+    {
+        return "<a href='DetailsFilm.php?movieId={$this->getId()}'>
+                <img src='Image.php?imageId={$this->getPosterId()}'>
+                <div> {$this->getTitle()} </div> <div> {$this->getReleaseDate()} </div>
+                <div> {$this->findActorRole($PID)->getRole()} </div><hr>
+                </a>";
+    }
+
     public function delete(): void
     {
         $stmt = MyPDO::getInstance()->prepare(
@@ -228,7 +237,7 @@ class Movie
         $stmt->execute([":PI" => $this->posterId, ":OL" => $this->originalLanguage,
             ":OT" => $this->originalTitle, ":OV" => $this->overview,
             ":RD" => $this->releaseDate, ":TG" => $this->tagline,
-            ":TT" => $this->title, ":ID => $this->id"]);
+            ":TT" => $this->title, ":ID" => $this->id]);
         return $this;
     }
 
@@ -330,5 +339,27 @@ class Movie
             throw new EntityNotFoundException();
         }
         return $res;
+    }
+
+    public function findActorRole($PID): cast
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+            SELECT  *
+            FROM    cast
+            WHERE   movieId  = :MID
+                    AND peopleId = :PID
+        SQL
+        );
+        #var_dump($this->id);
+        #var_dump($MID);
+        $stmt->execute([":MID" => $this->id, ":PID" => $PID]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Cast::class);
+        $res = $stmt->fetchAll();
+        #var_dump($res);
+        if (count($res) == 0) {
+            throw new EntityNotFoundException();
+        }
+        return $res[0];
     }
 }
