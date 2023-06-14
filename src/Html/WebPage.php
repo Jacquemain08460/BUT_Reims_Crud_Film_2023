@@ -109,20 +109,6 @@ class WebPage
     }
 
     /***
-     * Méthode permettant de convertir une chaîne de caractère
-     * et de la protéger pour la passer sans soucis dans la
-     * page web. Retourne la chaîne protégée.
-     *
-     * @param string $string chaîne à protéger
-     * @return string chaîne protégée
-     */
-    public function escapeString(string $string)
-    {
-        $protected = htmlspecialchars($string, ENT_HTML5 | ENT_QUOTES);
-        return $protected;
-    }
-
-    /***
      * Accesseur du body de la page html sous
      * forme de chaîne de caractères.
      *
