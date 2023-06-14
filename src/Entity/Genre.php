@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Entity;
 
+use Database\MyPdo;
+use PDO;
+
 class Genre
 {
     private string $name;
@@ -36,5 +39,21 @@ class Genre
         $this->name = $name;
     }
 
-
+    /**
+     * Acesseur de tous les genres de la base de données.
+     * @return array Liste des genres
+     */
+    public static function getAll():array
+    {
+        $stmt = MyPDO::getInstance()->prepare(
+            <<<'SQL'
+                SELECT *
+                FROM genre
+                ORDER BY id
+            SQL
+        );
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Genre::class);
+        return $stmt->fetchAll();
+    }
 }
