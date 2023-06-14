@@ -1,20 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Entity;
 
 class Genre
 {
-    private int $genreId;
     private string $name;
+    private int $id;
 
     /**
      * Accesseur de l'id du genre
      * @return int
      */
-    public function getGenreId():int
+    public function getId(): int
     {
-        return $this->genreId;
+        return $this->id;
     }
 
     /**

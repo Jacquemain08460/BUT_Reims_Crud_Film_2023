@@ -14,7 +14,7 @@ class Cast
     private int $peopleId;
     private string $role;
     private int $orderIndex;
-    private int $castId;
+    private int $id;
 
     /**
      *

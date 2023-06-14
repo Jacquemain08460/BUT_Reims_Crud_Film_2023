@@ -16,14 +16,13 @@ use PDO;
 
 class Actor
 {
-    private int $actorid;
-    private string $name;
+    private int $avatarId;
     private string|null $birthday;
     private string|null $deathday;
-    private string|null $birthplace;
+    private string $name;
     private string|null $biography;
-    private int|null $avatarId;
-    private int $id;
+    private string|null $placeOfBirth;
+    private int|null $id;
 
 
     /**
@@ -117,17 +116,17 @@ class Actor
     /**
      * @return string
      */
-    public function getBirthplace(): string
+    public function getPlaceOfBirth(): string
     {
-        return $this->birthplace;
+        return $this->placeOfBirth;
     }
 
     /**
-     * @param string $birthplace
+     * @param string $placeOfBirth
      */
-    public function setBirthplace(string $birthplace): Actor
+    public function setPlaceOfBirth(string $placeOfBirth): Actor
     {
-        $this->birthplace = $birthplace;
+        $this->placeOfBirth = $placeOfBirth;
         return $this;
     }
 

@@ -15,11 +15,11 @@ use function PHPUnit\Framework\throwException;
 class Image
 {
     private string $jpeg;
-    private int $imageId;
+    private int $id;
 
     public function getId(): int
     {
-        return $this->imageId;
+        return $this->id;
     }
 
     public function getJpeg(): string

@@ -50,7 +50,7 @@ foreach($acteurs as $acteur){
     #$contenu .="<a href='actor.php?actorId={$acteur->getActorId()}'>";
     $contenu .="<img src='Image.php?imageId={$acteur->getAvatarId()}'>";
     #$contenu .="<p>{Cast::findActorRole($acteur->getActorId())}</p>";
-    $contenu .="{$acteur->getname()}</a><hr></div>";
+    $contenu .="<a href='actor.php?actorId={$acteur->getId()}'>{$acteur->getname()}</a><hr></div>";
 }
 $moviePage->appendContent($contenu);
 
