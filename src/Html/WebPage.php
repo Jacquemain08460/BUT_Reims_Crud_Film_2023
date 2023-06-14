@@ -174,7 +174,7 @@ class WebPage
      */
     public function getLastModification()
     {
-        return date("F j, Y, g:i", getlastmod());
+        return date("j/m/Y-h:i:s", getlastmod());
     }
 
     /***

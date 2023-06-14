@@ -7,7 +7,7 @@ require_once '../vendor/autoload.php';
 use Database\MyPdo;
 use Entity\Movie;
 use Entity\Image;
-use Html\AppWebPage;
+use Html\MovieWebPage;
 
 #MyPDO::setConfiguration('mysql:host=mysql;dbname=cutron01_music;charset=utf8', 'web', 'web');
 
@@ -15,7 +15,7 @@ use Html\AppWebPage;
 
 #$All = Actor::getAll();
 
-#$WebPage = new AppWebPage('Artistes');
+#$WebPage = new MovieWebPage('Artistes');
 
 #$Actors = $All -> getAll();
 
@@ -30,13 +30,13 @@ use Html\AppWebPage;
 
 $All = Movie::getAll();
 
-$WebPage = new AppWebPage('Movies');
+$WebPage = new MovieWebPage('Movies');
 
 foreach ($All as $Movie) {
     #echo(gettype($Movie));
     #var_dump($Movie);
-    $WebPage->appendContent("<img src='Image.php?imageId={$Movie->getPosterId()}'>");
-    $WebPage->appendContent("<a href='DetailsFilm.php?movieId={$Movie->getId()}'>{$WebPage -> escapeString($Movie -> getTitle())}</a><hr>");
+    $WebPage->appendContent("<a href='DetailsFilm.php?movieId={$Movie->getId()}'><img src='Image.php?imageId={$Movie->getPosterId()}'>");
+    $WebPage->appendContent("{$WebPage -> escapeString($Movie -> getTitle())}</a><hr>");
 }
 
 echo $WebPage->toHTML();
