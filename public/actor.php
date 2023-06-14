@@ -8,6 +8,8 @@ use Database\MyPdo;
 use Entity\Actor;
 use Html\AppWebPage;
 
+#MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
+
 if (!isset($_GET["actorId"]) || !ctype_digit($_GET["actorId"])) {
     header("Location: index.php");
     exit(404);

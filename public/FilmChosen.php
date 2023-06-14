@@ -2,8 +2,10 @@
 declare(strict_types=1);
 
 use Database\MyPdo;
+use Entity\Actor;
 use Entity\Image;
 use Entity\Movie;
+use Entity\Cast;
 use Html\AppWebPage;
 
 MyPDO::setConfiguration('mysql:host=mysql;dbname=jacq0223;charset=utf8', 'jacq0223', 'jacq0223');
@@ -39,7 +41,19 @@ $contenu .="<p>{$film->getOverview()}</p>";
 $contenu .="</div>";
 
 $moviePage->appendContent($contenu);
+$contenu .="";
 #boucle acteur
+$acteurs= $film->findActorByMovieId();
+$contenu = "";
+foreach($acteurs as $acteur){
+    #$acteur = Actor::findById($acteur->getActorId());
+    $contenu .= "<div>";
+    #$contenu .="<a href='actor.php?actorId={$acteur->getActorId()}'>";
+    $contenu .="<img src='Image.php?imageId={$acteur->getAvatarId()}'>";
+    #$contenu .="<p>{Cast::findActorRole($acteur->getActorId())}</p>";
+    $contenu .="{$acteur->getname()}</a><hr></div>";
+}
+$moviePage->appendContent($contenu);
 
 echo $moviePage->toHTML();
 
